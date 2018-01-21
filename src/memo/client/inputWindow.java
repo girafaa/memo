@@ -1,6 +1,8 @@
 package memo.client;
 
 import java.awt.BorderLayout;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -29,7 +31,31 @@ public class inputWindow extends JFrame{
 		event();
 		design();
 		menu();
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);  //x키 방지(+기본제공하는 종료 옵션이 아니라 내가 원하는 거 하고 싶을 때, 이벤트 설정하면 된다.)
+		this.addWindowListener(new WindowAdapter() {		//X키 종료 옵션 설정
+			public void windowClosing(WindowEvent e) {
+				int select = JOptionPane.showConfirmDialog(panel, "저장하시겠습니까?");
+				//yes : 0, no : 1, cancel : 2
+				if(select==1) {
+					System.exit(0);
+				}
+				if(select==0) {
+					String id = "hee";		//나중에 로그인 정보에서 가져오기
+					String detail = Jtxt.getText();
+					memoDto mdto = new memoDto();
+					mdto.setId(id);
+					mdto.setDetail(detail);
+					memoDao mdao = new memoDao();
+					try {
+						mdao.write(mdto);
+					} catch (Exception e1) {
+						e1.printStackTrace();
+					}
+					System.exit(0);
+				}
+				
+			}
+		});
 		setSize(700, 500);
 		setLocationByPlatform(true);	//위치를 운영체제가 정하도록 설정, 여러개 창켜면 알아서 위치 겹치지 않게 만듬.
 		this.setVisible(true);
