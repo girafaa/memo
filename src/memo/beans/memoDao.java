@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class memoDao {
-	Connection getConnection() throws Exception{
+	private Connection getConnection() throws Exception{
 		Class.forName("oracle.jdbc.OracleDriver");
 		String url = "jdbc:oracle:thin:@localhost:1521:xe";
 		String user = "memo";
@@ -17,7 +17,7 @@ public class memoDao {
 		return con;
 	}
 	
-	List<memoDto> getList() throws Exception{
+	public List<memoDto> getList() throws Exception{
 		Connection con = getConnection();
 		String sql = "select * from memo order by no";
 		PreparedStatement ps = con.prepareStatement(sql);
@@ -35,7 +35,7 @@ public class memoDao {
 		return list;
 	}
 	
-	void write(memoDto dto) throws Exception {
+	public void write(memoDto dto) throws Exception {
 		Connection con = getConnection();
 		String sql = "insert into memo values(memo_seq.nextval,?,sysdate,sysdate,?)";
 		PreparedStatement ps = con.prepareStatement(sql);
@@ -45,7 +45,7 @@ public class memoDao {
 		con.close();
 	}
 	
-	boolean update(memoDto dto) throws Exception{
+	public boolean update(memoDto dto) throws Exception{
 		Connection con = getConnection();
 		String sql = "update memo set detail=?, lastupdate=sysdate where no = ?";
 		PreparedStatement ps = con.prepareStatement(sql);

@@ -6,23 +6,27 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.ScrollPaneConstants;
 
-public class ClientGui extends JFrame{
+import memo.beans.memoDao;
+import memo.beans.memoDto;
+
+public class inputWindow extends JFrame{
 	private JPanel panel = new JPanel(new BorderLayout());
 	private JTextArea Jtxt;
 	private JMenuBar menubar = new JMenuBar();
 	private JMenu file = new JMenu("파일");
 	private JMenuItem newPage = new JMenuItem("새로 만들기");
-	private JMenuItem open = new JMenuItem("열기");
+	private JMenuItem list = new JMenuItem("전체 리스트");
 	private JMenuItem save = new JMenuItem("저장");
-	private JMenuItem saveLocation = new JMenuItem("다른 이름으로 저장");
 	private JMenuItem exit = new JMenuItem("끝내기");
 	
-	ClientGui(){
+	inputWindow(){
+		event();
 		design();
 		menu();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -34,9 +38,8 @@ public class ClientGui extends JFrame{
 		this.setJMenuBar(menubar);
 		menubar.add(file);
 		file.add(newPage);
-		file.add(open);
+		file.add(list);
 		file.add(save);
-		file.add(saveLocation);
 		file.addSeparator(); //구분선
 		file.add(exit);
 	}
@@ -49,5 +52,35 @@ public class ClientGui extends JFrame{
 		scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		//수직 스크롤바만 생성
 		panel.add(scroll,BorderLayout.CENTER);
+	}
+	
+	void event() {
+		newPage.addActionListener(e->{
+			Jtxt.setText("");
+		});
+		
+		list.addActionListener(e->{
+		});
+		
+		save.addActionListener(e->{
+			String id = "hee";		//나중에 로그인 정보에서 가져오기
+			String detail = Jtxt.getText();
+			memoDto mdto = new memoDto();
+			mdto.setId(id);
+			mdto.setDetail(detail);
+			memoDao mdao = new memoDao();
+			try {
+				mdao.write(mdto);
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
+			JOptionPane.showMessageDialog(this, "저장 완료", "저장", JOptionPane.PLAIN_MESSAGE);
+		});
+		
+		//끝내기
+		exit.addActionListener(e->{
+			System.exit(0);
+		});
+		
 	}
 }

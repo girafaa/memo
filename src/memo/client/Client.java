@@ -4,10 +4,9 @@ import java.net.Socket;
 
 public class Client {
 	public static void main(String[] args) {
-		new ClientGui();
+		new inputWindow();
 		String ip = "localhost";
 		int port = 20000;
-		
 		try (
 			Socket socket = new Socket(ip, port);
 		){
