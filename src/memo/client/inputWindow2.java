@@ -183,18 +183,48 @@ public class inputWindow2 extends JFrame{
 		InputMap iMap = textPane.getInputMap();
 		ActionMap aMap = textPane.getActionMap();
 		
+		//-----블록범위 글자 크게 단축키-----
+		
 		KeyStroke fontBig = KeyStroke.getKeyStroke('E',Event.ALT_MASK+Event.SHIFT_MASK); 
 		Action BigAction = new AbstractAction() {
 			public void actionPerformed(ActionEvent e) {
 				loadBlock();
-		    	System.out.println("text");
 				//폰트설정
-			    Font font = new Font("Serif", Font.ITALIC, 30);	//폰트 설정
+			    Font font = new Font("Serif", Font.PLAIN, 30);	//폰트 설정
 			    setJTextPaneFont(textPane, font, Color.darkGray,blockIndex,blockLength);
 			}
 		};	
-		iMap.put(fontBig, "enter");
-		aMap.put("enter", BigAction);
+		iMap.put(fontBig, "fontBig");
+		aMap.put("fontBig", BigAction);
+		
+		//-----블록범위 글자 작게 단축키-----
+		
+		KeyStroke fontSmall = KeyStroke.getKeyStroke('R',Event.ALT_MASK+Event.SHIFT_MASK); 
+		Action smallAction = new AbstractAction() {
+			public void actionPerformed(ActionEvent e) {
+				loadBlock();
+				//폰트설정
+			    Font font = new Font("Serif", Font.PLAIN, 5);	//폰트 설정
+			    setJTextPaneFont(textPane, font, Color.darkGray,blockIndex,blockLength);
+			}
+		};	
+		iMap.put(fontSmall, "fontSmall");
+		aMap.put("fontSmall", smallAction);
+		
+		//-----블록범위 글자 빨간색 단축키-----
+		
+		KeyStroke fontRed = KeyStroke.getKeyStroke('R',Event.CTRL_MASK); 
+		Action redAction = new AbstractAction() {
+			public void actionPerformed(ActionEvent e) {
+				loadBlock();
+				//폰트설정
+			    Font font = new Font("Serif", Font.PLAIN, 10);	//폰트 설정
+			    setJTextPaneFont(textPane, font, Color.RED,blockIndex,blockLength);
+			}
+		};	
+		iMap.put(fontRed, "fontRed");
+		aMap.put("fontRed", redAction);		
+		
 	    
 	}
 //-----블록범위 불러오는 메소드-----	
@@ -203,7 +233,7 @@ public class inputWindow2 extends JFrame{
 	      public void caretUpdate(CaretEvent caretEvent) {
 	        	blockIndex = caretEvent.getDot()<caretEvent.getMark()?caretEvent.getDot():caretEvent.getMark();	//블록 시작 위치
 	        	blockLength = Math.abs(caretEvent.getMark()-caretEvent.getDot());	//블록 길이
-	        	System.out.println("블럭범위인식");
+//	        	System.out.println("블럭범위인식");
 	      }
 	    };
     	System.out.println("text");
@@ -216,7 +246,7 @@ public class inputWindow2 extends JFrame{
 	   
 	    //폰트객체에서 불러와 StyleConstants에 채운다
 	    StyleConstants.setFontFamily(attrs, font.getFamily());
-	    StyleConstants.setFontSize(attrs, font.getSize());
+	    StyleConstants.setFontSize(attrs, font.getSize()+5);
 	    StyleConstants.setItalic(attrs, (font.getStyle() & Font.ITALIC) != 0); 	
 	    StyleConstants.setBold(attrs, (font.getStyle() & Font.BOLD) != 0);
 	    StyleConstants.setForeground(attrs, c);	//attr에 적용할 색상 넣기
